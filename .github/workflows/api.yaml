@@ -12,7 +12,7 @@ jobs:
       - name: Building image
         uses: actions/docker/cli@76ff57a
         with:
-          args: build -t docker.pkg.github.com/tjipbv/upspinner-example/upspinner:latest .
+          args: build -t docker.pkg.github.com/tjipbv/upspinner-example/upspinner:master-${{ github.sha }} .
       - name: Docker Login
         uses: actions/docker/cli@76ff57a
         with:
@@ -20,4 +20,4 @@ jobs:
       - name: Push image to Github Package
         uses: actions/docker/cli@master
         with:
-          args: push docker.pkg.github.com/tjipbv/upspinner-example/upspinner:latest
+          args: push docker.pkg.github.com/tjipbv/upspinner-example/upspinner:master-${{ github.sha }}
