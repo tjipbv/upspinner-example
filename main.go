@@ -50,7 +50,8 @@ func (s *server) Run() error {
 		s.HttpPort = defaultHttpPort
 	}
 
-	http.HandleFunc("/", s.auth(s.handleIndex()))
+	http.HandleFunc("/", s.handleIndex())
+	http.HandleFunc("/data", s.auth(s.handleIndex()))
 
 	fmt.Printf("Listening on :%s\n", s.HttpPort)
 	return http.ListenAndServe(fmt.Sprintf(":%s", s.HttpPort), nil)
