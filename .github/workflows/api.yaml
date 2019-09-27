@@ -10,17 +10,14 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - name: Building image
-        run: docker build -t docker.pkg.github.com/tjipbv/upspinner-example/api:${{ github.sha }} .
-      - name: Log in to registry
-        uses: actions/docker/login@master
-        env:
-          DOCKER_REGISTRY_URL: docker.pkg.github.com
-          DOCKER_USERNAME: mvmaasakkers
-          DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
-#      - name: Docker Login
-#        run: docker login docker.pkg.github.com --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
-#        env:
-#          DOCKER_USERNAME: ${{ secrets.GITHUB_DOCKER_USERNAME }}
-#          DOCKER_PASSWORD: ${{ secrets.GITHUB_DOCKER_PASSWORD }}
+        uses: actions/docker/cli@76ff57a
+        with:
+          args: build -t docker.pkg.github.com/tjipbv/upspinner-example/api:master-${{ github.sha }} .
+      - name: Docker Login
+        uses: actions/docker/cli@76ff57a
+        with:
+          args: login docker.pkg.github.com -u ${{ secrets.GITHUB_DOCKER_USERNAME }} -p ${{ secrets.GITHUB_DOCKER_PASSWORD }}
       - name: Push image to Github Package
-        run: docker push docker.pkg.github.com/tjipbv/upspinner-example/api:${{ github.sha }}
+        uses: actions/docker/cli@master
+        with:
+          args: push docker.pkg.github.com/tjipbv/upspinner-example/api:master-${{ github.sha }}
