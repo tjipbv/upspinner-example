@@ -1,0 +1,60 @@
+apiVersion: networking.gke.io/v1beta1
+kind: ManagedCertificate
+metadata:
+  name: certificate
+spec:
+  domains:
+    - upspinner-example.mypoc.io
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: upspinner-example
+  labels:
+    app: upspinner-example
+spec:
+  selector:
+    matchLabels:
+      app: upspinner-example
+  template:
+    metadata:
+      labels:
+        app: upspinner-example
+    spec:
+      imagePullSecrets:
+        - name: github-packages
+      containers:
+        - image: docker.pkg.github.com/tjipbv/upspinner-example/api:latest
+          name: upspinner-example
+          ports:
+            - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: upspinner-example
+spec:
+  ports:
+    - port: 80
+      targetPort: 3000
+      protocol: TCP
+  selector:
+    app: upspinner-example
+  type: NodePort
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: app-ingress
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: "mypoc-io-ip"
+    kubernetes.io/ingress.allow-http: "false"
+    networking.gke.io/managed-certificates: certificate
+spec:
+  rules:
+    - host: upspinner-example.mypoc.io
+      http:
+        paths:
+          - backend:
+              serviceName: upspinner-example
+              servicePort: 80

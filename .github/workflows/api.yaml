@@ -1,0 +1,23 @@
+name: Build and push API
+on:
+  push:
+    branches:
+      - master
+jobs:
+  deploy:
+    name: Build and deploy the API
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Building image
+        uses: actions/docker/cli@76ff57a
+        with:
+          args: build -t docker.pkg.github.com/tjipbv/upspinner-example/api:${{ github.sha }} .
+      - name: Docker Login
+        uses: actions/docker/cli@76ff57a
+        with:
+          args: login docker.pkg.github.com -u ${{ secrets.GITHUB_DOCKER_USERNAME }} -p ${{ secrets.GITHUB_DOCKER_PASSWORD }}
+      - name: Push image to Github Package
+        uses: actions/docker/cli@master
+        with:
+          args: push docker.pkg.github.com/tjipbv/upspinner-example/api:${{ github.sha }}
