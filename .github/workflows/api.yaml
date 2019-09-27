@@ -18,6 +18,6 @@ jobs:
         with:
           args: login docker.pkg.github.com -u ${{ secrets.GITHUB_DOCKER_USERNAME }} -p ${{ secrets.GITHUB_DOCKER_TOKEN }}
       - name: Push image to Github Package
-        uses: actions/docker/cli@master
+        uses: actions/docker/cli@76ff57a
         with:
           args: push docker.pkg.github.com/tjipbv/upspinner-example/api:${{ github.sha }}
