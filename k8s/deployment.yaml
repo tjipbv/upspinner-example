@@ -24,7 +24,7 @@ spec:
       imagePullSecrets:
         - name: github-packages
       containers:
-        - image: docker.pkg.github.com/tjipbv/upspinner-example/api:latest
+        - image: docker.pkg.github.com/tjipbv/upspinner-example/api:dcdd3e0ee770f8d382827a7bcac72a4dde2f3a8a
           name: upspinner-example
           ports:
             - containerPort: 3000
