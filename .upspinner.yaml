@@ -1,3 +1,8 @@
 name: Upspinner Example
 k8s:
   config: ./k8s
+dependencies:
+  - type: postgres
+ingress:
+  - service: upspinner-example
+    port: 80
