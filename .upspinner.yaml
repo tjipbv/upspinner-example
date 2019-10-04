@@ -3,6 +3,13 @@ k8s:
   config: ./k8s
 dependencies:
   - type: postgres
+    secrets:
+      - name: postgres-connection-details
+        data:
+          - key: connectionString
+            value: connectionString
+          - key: host
+            value: host
 ingress:
   - service: upspinner-example
     port: 80
