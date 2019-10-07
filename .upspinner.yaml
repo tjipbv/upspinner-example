@@ -12,4 +12,5 @@ dependencies:
             value: host
 ingress:
   - service: upspinner-example
+    path: /
     port: 80
